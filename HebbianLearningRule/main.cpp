@@ -1,7 +1,7 @@
 #include "hebb.h"
 int main() {
   int data[4][3] = {
-      {1, 1, 1}, {1, -1, -1}, {-1, 1, -1}, {-1, -1, -1}}; // Basic AND gate
+      {1, 1, 1}, {1, -1, 1}, {-1, 1, 1}, {-1, -1, -1}}; // Basic AND gate
   int input_layer[] = {0, 0}, input_size = 2, output_layer[] = {0},
       output_size = 1, bias = 0;
   int dataset_rows = 4, dataset_cols = 3,
@@ -17,7 +17,8 @@ int main() {
   }
   Perceptron model = Perceptron(dataset, 4, 3);
   model.printWeights();
-  int arr[2] = {1, -1};
+  model.train_new();
+  int arr[2] = {-1, 1};
   model.predict(arr);
   return 0;
 }
