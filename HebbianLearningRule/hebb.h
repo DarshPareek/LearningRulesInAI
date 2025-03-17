@@ -2,7 +2,7 @@
 #include <numeric>
 #include <vector>
 
-int dot(std::vector<int> arr1, int *arr2, int rows, int columns) {
+inline int dot(std::vector<int> arr1, int *arr2, int rows, int columns) {
   int i = 0, res = 0;
   for (i = 0; i < columns - 1; i++) {
     res += arr1[i] * arr2[i];
