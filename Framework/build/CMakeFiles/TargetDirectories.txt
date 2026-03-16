@@ -1,0 +1,3 @@
+/home/darsh/devel/intWork/PID008/LearningRulesInAI/Framework/build/CMakeFiles/framework.dir
+/home/darsh/devel/intWork/PID008/LearningRulesInAI/Framework/build/CMakeFiles/edit_cache.dir
+/home/darsh/devel/intWork/PID008/LearningRulesInAI/Framework/build/CMakeFiles/rebuild_cache.dir

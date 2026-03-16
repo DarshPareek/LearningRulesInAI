@@ -1,0 +1,50 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+\paragraph{Hebbian learning rule states that neurons that fire together wire together. This is a fundamental rule in used for training of neural networks but on it's own it is only useful for a single layered neural network.}
+\subsection{Assumptions}
+\paragraph{We assume the following when implementing the hebbian learning rule.}
+\begin{itemize}
+  \item The netowork only has one input layer of size $M$ and one output layer of size $N$.
+  \item There is a weight matrix of size $[M \times N]$.
+  \item There is only one bias vector of size $N$.
+  \item The activation function is applied only on the output layer.
+\end{itemize}
+\subsection{Equations}
+\subsubsection{Forward}
+\text{Let's say we have an input vector of size $M$ given as:}
+$$ X = \begin{bmatrix}
+  x_1 & x_2 \cdots x_M
+\end{bmatrix}$$
+\text{and we have weight matrix of size $M \times N$ given as:}
+  $$ W = \begin{bmatrix}
+  w_{11} & w_{12} \cdots w_{1N} \\
+  w_{21} & w_22 \cdots w_{2N} \\
+   \vdots & \\
+  w_{M1} & w_{M2} \cdots w_{MN}\\
+\end{bmatrix}$$
+\text{and we have bias in a vector size $N$ given as:}
+$$ b = \begin{bmatrix}
+  b_1
+  \cdots
+  b_N
+\end{bmatrix}$$
+\text{using these we can write the forward pass as:}
+$$ y = activation(X \cdot W + b)$$
+\text{here $y$ is the predicted output of the neural network.} \\
+\text{$y$ is vector of size $N$}
+\text{"." is the matrix multiplication.}
+\subsubsection{Updates}
+\paragraph{Hebbian learning rule has only two updates, one is for weights and other is for biases. These grow infinitely so training for longer intervals can make model useless.}
+\begin{align}
+  \Delta w &= \eta y.x \\
+  \Delta b &= \eta y
+\end{align}
+The $\eta$ is the learing rate. \\
+y is the output vector. \\
+x is input vector.
+\subsubsection{Insights}
+\begin{itemize}
+  \item Hebbian learning rule is unsupervised.
+  \item The dataset should be divided into positive and negative category becuase it will help in driving the weights up or down.
+\end{itemize}
+\end{document}

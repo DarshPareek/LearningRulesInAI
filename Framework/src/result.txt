@@ -1,0 +1,1 @@
+0.897775 when using the normal FFN with full gradient descent.

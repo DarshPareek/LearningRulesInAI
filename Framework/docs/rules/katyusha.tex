@@ -1,0 +1,44 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+\paragraph{Katyusha is not really a learning rule but an update rule, the main focus of the
+rule is how the calculated gradients are used to update the weights and biases
+to accelerate Stochastic Gradient Descent. \\
+Since my implementation is based around full-batch gradient descent the stochastic part of the katyusha algortithm is changed to work with full batches.}
+\subsection{Main Elements of the Rule}
+\begin{itemize}
+  \item The rule uses the Nesterov’s momentum to boost the descent of gradient but also adds a negative momentum to keep it anchored.
+  \item There are two loops in this rule. The outer one is for $epochs$ and the inner one runs for $(2 \times \text{Number of data samples}) = m$. For our case the inner loop runs for 3 iterations
+  \item Four parameters are calculated before starting the training.
+    \begin{itemize}
+            \item $\tau_{1}$ from the nestrov momentum $ = min{\left(\frac{\sqrt{m\sigma}}{\sqrt{3L}}, \frac{1}{2}\right)}$ or $\frac{2}{s+4}$ in our case where $s$ is the epoch number.
+\item $\sigma$ is convexity constant. $0$ in our case.
+\item $L$ is smoothness constant. Calculated by finding the eigenvalue of $X^{T}X$
+\item $\tau_{2}$ is katyusha momentum $ = \frac{1}{2}$ this can be tuned but default is good enough.
+\item $\alpha$ is the learning rate $ = \frac{1}{3\tau_{1}L}$
+    \end{itemize}
+      \item There are three main vectors:
+    \begin{itemize}
+      \item $\tilde{x}$ this is the inintial snapshot with the model wights and biases. It is updated at the end of each epoch and it the trained model at the end of training.
+      \item $y^{k}$ this is used to hold gradient during the inner iterations at each epoch.
+      \item $z^{k}$ this is used to hold the past gradient information to build a momentum.
+    \end{itemize}
+    \begin{itemize}
+  \item After every $m$ iterations we take a snapshot gradient of the whole dataset.
+  \item In the inner loop we calculate
+    \begin{itemize}
+      \item $x_{k+1} = \tau_{1}z_{k} + \tau_{2}\tilde{x}^{s} + (1 - \tau_{1} - \tau_{2})*y_{k}$
+      \item $\bigtriangledown_{k+1} = \bigtriangledown_{f(x_{k+1})}$ because I am using full batch.
+        \item $z_{k+1} = z_{k} - \alpha * \bigtriangledown_{k+1}$
+        \item $y_{k+1} = x_{k+1} - (\frac{1}{3L})*\bigtriangledown_{k+1}$
+    \end{itemize}
+  \item final snapshot $\frac{1}{m}\sum_{j=0}^{m-1}{y_{sm+j+1}}$
+\end{itemize}
+\end{itemize}
+\subsection{Insights}
+\begin{itemize}
+  \item The rule takes much more time than just gradient descent.
+    \item The rule is an optimizer like ADAM.
+    \item The rule drops the loss rapidly at first but then slows down as it reaches near $0$.
+    \item The rule can work with very large networks which the normal full batch gradient descent failed to do.
+\end{itemize}
+\end{document}

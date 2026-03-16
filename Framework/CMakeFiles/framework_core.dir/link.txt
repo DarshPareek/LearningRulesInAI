@@ -1,0 +1,2 @@
+/usr/bin/ar qc libframework_core.a CMakeFiles/framework_core.dir/src/nn_functions.cpp.o CMakeFiles/framework_core.dir/src/read_csv_bind.cpp.o
+/usr/bin/ranlib libframework_core.a

@@ -1,0 +1,94 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+\paragraph{Delta learning rule is a supervised learning rule that uses a cost function to determine the direction of the function represented by the neural network. Then it makes the updates in the direction where the function is decreasing the fastest to reach local minima. In simpler words, the learning rule just tries to minimize the total cost of the forward propagation step.}
+
+\subsection{Assumptions}
+We assume the following when implementing the basic delta learning rule:
+\begin{itemize}
+  \item The network can have $N$ layers of any sizes.
+  \item The input vector is of size $x \times N_1$ where $N_1$ is the size of the input layer.
+  \item The output layer is of the size of $x \times N_m$ where $m$ is the size of the output layer.
+  \item Every layer has a bias vector that is of size $y \times N_j$ where $y$ is the size of inputs passed to that layer and $j$ is the number of neurons in that layer.
+  \item We also have matrices like $\Delta weights$, $\Delta biases$, $\Delta costs$ etc which are just update vectors for their normal counterparts.
+\end{itemize}
+
+\subsection{Equations}
+\subsubsection{Forward}
+For simplicity, let's take the input vector to be of size $1 \times M$:
+$$\begin{bmatrix}
+  x_1 & x_2 & \hdots & x_M
+\end{bmatrix}$$
+Let's also assume that there is only one hidden layer and the output is just one neuron.\\
+The weights can be of size $M \times 1$.\\
+The Biases can be of size $1 \times 1$.
+$$
+Weights = \begin{bmatrix}
+w_1 \\ w_2 \\ \vdots \\ w_M
+\end{bmatrix}
+\quad
+Biases = \begin{bmatrix}
+    b
+\end{bmatrix}
+$$
+Now using these to predict the output using the input vector X.
+Let $z$ be the pre-activation output:
+$$z = X \cdot W + b$$
+The final predicted output $Y_{pred}$ is obtained by applying an activation function $g(z)$:
+$$
+Y_{pred} = g(z) = g(X \cdot W + b)
+$$
+The matrix multiplication $X \cdot W$ results in a $(1 \times M) \cdot (M \times 1) \rightarrow (1 \times 1)$ matrix, to which the bias is added.
+
+\subsubsection{Cost Function}
+To measure the error between the predicted and expected outputs, the rule uses a cost function. Here we'll use the Mean Squared Error (MSE):
+$$
+C = \frac{1}{n}\sum_{i = 1}^{n}{(Y_{true}^i - Y_{pred}^i)^2}
+$$
+Here $n$ is the number of input samples passed to the neural network. For a single sample, the cost is simply $C = (Y_{true} - Y_{pred})^2$.
+
+\subsubsection{Backward}
+Now we need to update the weights and biases by calculating how the cost function $C$ changes with respect to them. This is done using the chain rule from calculus, a process known as backpropagation. We want to move in the direction opposite to the gradient to minimize the cost.
+
+\paragraph{Bias Updates\\}
+First, we find the partial derivative of the cost $C$ with respect to the bias $B$. For a single training example, we use the chain rule:
+$$
+\frac{\partial C}{\partial B} = \frac{\partial C}{\partial Y_{pred}} \cdot \frac{\partial Y_{pred}}{\partial z} \cdot \frac{\partial z}{\partial B}
+$$
+Let's calculate each part:
+\begin{itemize}
+    \item $\frac{\partial C}{\partial Y_{pred}} = \frac{\partial}{\partial Y_{pred}} (Y_{true} - Y_{pred})^2 = 2(Y_{pred} - Y_{true})$
+    \item $\frac{\partial Y_{pred}}{\partial z} = g'(z)$, which is the derivative of the activation function.
+    \item $\frac{\partial z}{\partial B} = \frac{\partial}{\partial B} (X \cdot W + B) = 1$
+\end{itemize}
+Combining these gives the gradient for a single sample:
+$$
+\frac{\partial C}{\partial B} = 2(Y_{pred} - Y_{true}) \cdot g'(z)
+$$
+For a batch of $n$ inputs, we average this gradient. The update rule for the bias then becomes:
+$$B_{new} = B_{old} - \eta \cdot \frac{1}{n}\sum_{i = 1}^{n} \frac{\partial C_i}{\partial B_i}$$
+Here $\eta$ is the learning rate, a hyperparameter that controls the step size.
+
+\paragraph{Weight Updates\\}
+The process for updating the weights is similar. We find the partial derivative of the cost $C$ with respect to the weights $W$:
+$$
+\frac{\partial C}{\partial W} = \frac{\partial C}{\partial Y_{pred}} \cdot \frac{\partial Y_{pred}}{\partial z} \cdot \frac{\partial z}{\partial W}
+$$
+The first two terms are the same as in the bias update. Let's find the third term:
+\begin{itemize}
+    \item $\frac{\partial z}{\partial W} = \frac{\partial}{\partial W} (X \cdot W + B) = X^T$ (The transpose of the input vector)
+\end{itemize}
+This gives the gradient for a single sample:
+$$
+\frac{\partial C}{\partial W} = X^T \cdot \left( 2(Y_{pred} - Y_{true}) \cdot g'(z) \right)
+$$
+Note that the term in the parenthesis is the same scalar value we calculated for the bias gradient. For a batch of $n$ inputs, we average the gradients. The update rule for weights is:
+$$W_{new} = W_{old} - \eta \cdot \frac{1}{n}\sum_{i = 1}^{n} \frac{\partial C_i}{\partial W_i}$$
+By repeatedly applying these forward and backward steps for many epochs, the model learns to adjust its weights and biases to minimize the cost function, resulting in more accurate predictions.
+\subsubsection{Insights}
+\begin{itemize}
+\item This is the foundational way through how Neural Networks are tranined.
+\item This also called the algorithm for gradient descent and there are many variations made to this algorithm to speed up the learning process.
+\item Deep Neural Networks are also trained using delta learning rule.
+\item This is a supervised learning rule.
+\end{itemize}
+\end{document}

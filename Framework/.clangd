@@ -1,0 +1,5 @@
+CompileFlags:
+  Add: -I/usr/include/python3.13
+  Add: -I/usr/local/bin
+  Add: -I/usr/local/
+
